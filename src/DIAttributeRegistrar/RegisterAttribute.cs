@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -15,10 +16,15 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             this.ServiceLifetime = serviceLifetime;
             this.AsType = asType;
-            this.Tags = tags ?? new string[] { };
+            this.Tags = tags == null ? new string[] { } : tags.Where(t => t != null).ToArray();
         }
 
         public RegisterAttribute(ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, params string[] tags) : this(null, serviceLifetime, tags)
+        {
+
+        }
+
+        public RegisterAttribute(params string[] tags) : this(null, ServiceLifetime.Scoped, tags)
         {
 
         }
