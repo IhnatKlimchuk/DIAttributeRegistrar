@@ -7,12 +7,27 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class DIAttributeRegistrarExtentions
     {
+        /// <summary>
+        ///     <para>
+        ///         Provides ability initialize all attribute marked dependencies.
+        ///     </para>
+        /// </summary>
+        /// <param name="serviceCollection">Service collection to add dependencies.</param>
+        /// <param name="assembliesToSearch">Assemblies to search <see cref="RegisterAttribute"/> marked classes.</param>
+        /// <param name="tags">Tags to filter attributes. See documentation for more details.</param>
         public static IServiceCollection AddAttributeRegistration(this IServiceCollection serviceCollection, Assembly[] assembliesToSearch, params string[] tags)
         {
             ConfigureManagersFromAttributes(serviceCollection, assembliesToSearch, tags);
             return serviceCollection;
         }
 
+        /// <summary>
+        ///     <para>
+        ///         Provides ability initialize all attribute marked dependencies.
+        ///     </para>
+        /// </summary>
+        /// <param name="serviceCollection">Service collection to add dependencies.</param>
+        /// <param name="tags">Tags to filter attributes. See documentation for more details.</param>
         public static IServiceCollection AddAttributeRegistration(this IServiceCollection serviceCollection, params string[] tags)
         {
             var assemblies = GetAllAssemblies();

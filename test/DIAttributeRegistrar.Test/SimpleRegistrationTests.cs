@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using Xunit;
 
 namespace DIAttributeRegistrar.Test
