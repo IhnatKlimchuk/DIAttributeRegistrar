@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             this.ServiceLifetime = serviceLifetime;
             this.AsType = asType;
-            this.Tags = tags;
+            this.Tags = tags ?? new string[] { };
         }
 
         public RegisterAttribute(ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, params string[] tags) : this(null, serviceLifetime, tags)
