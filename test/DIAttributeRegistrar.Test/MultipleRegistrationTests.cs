@@ -17,8 +17,8 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies)
                 .BuildServiceProvider();
 
-            var firstTestClass = serviceProvider.GetService<TestClassA>();
-            var secondTestClass = serviceProvider.GetService<TestClassA>();
+            var firstTestClass = serviceProvider.GetService<MultipleRegistrationTests_TestClassA>();
+            var secondTestClass = serviceProvider.GetService<MultipleRegistrationTests_TestClassA>();
             Assert.NotSame(firstTestClass, secondTestClass);
         }
 
@@ -29,15 +29,45 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies)
                 .BuildServiceProvider();
 
-            var firstTestClass = serviceProvider.GetService<InverseTestClassA>();
-            var secondTestClass = serviceProvider.GetService<InverseTestClassA>();
+            var firstTestClass = serviceProvider.GetService<MultipleRegistrationTests_InverseTestClassA>();
+            var secondTestClass = serviceProvider.GetService<MultipleRegistrationTests_InverseTestClassA>();
             Assert.NotSame(firstTestClass, secondTestClass);
+        }
+
+        [Fact]
+        public void TestClassWithMultipleAttributes_WithDifferentLifetime_Registered_WithCorrectTag()
+        {
+            var devServiceProvider = ServiceCollection
+                .AddAttributeRegistration(CurrentAssemblies, Constans.DevTag)
+                .BuildServiceProvider();
+            
+            var firstDevTestClass = devServiceProvider.GetService<MultipleRegistrationTests_TestClassB>();
+            var secondDevTestClass = devServiceProvider.GetService<MultipleRegistrationTests_TestClassB>();
+            Assert.Same(firstDevTestClass, secondDevTestClass);
+
+            var testServiceProvider = ServiceCollection
+                .AddAttributeRegistration(CurrentAssemblies, Constans.TestTag)
+                .BuildServiceProvider();
+
+            var firstTestTestClass = testServiceProvider.GetService<MultipleRegistrationTests_TestClassB>();
+            var secondtestTestClass = testServiceProvider.GetService<MultipleRegistrationTests_TestClassB>();
+            Assert.NotSame(firstTestTestClass, secondtestTestClass);
+        }
+
+        [Fact]
+        public void TestClassWithMultipleAttributes_WithDifferentTags_Registered()
+        {
+            var serviceProvider = ServiceCollection
+                .AddAttributeRegistration(CurrentAssemblies, Constans.LiveTag)
+                .BuildServiceProvider();
+
+            var testClass = serviceProvider.GetService<MultipleRegistrationTests_TestClassC>();
         }
 
         [Register(ServiceLifetime.Singleton)]
         [Register(ServiceLifetime.Scoped)]
         [Register(ServiceLifetime.Transient)]
-        public class TestClassA
+        public class MultipleRegistrationTests_TestClassA
         {
 
         }
@@ -45,7 +75,21 @@ namespace DIAttributeRegistrar.Test
         [Register(ServiceLifetime.Transient)]
         [Register(ServiceLifetime.Scoped)]
         [Register(ServiceLifetime.Singleton)]
-        public class InverseTestClassA
+        public class MultipleRegistrationTests_InverseTestClassA
+        {
+
+        }
+        
+        [Register(ServiceLifetime.Singleton, Constans.DevTag)]
+        [Register(ServiceLifetime.Transient, Constans.TestTag)]
+        public class MultipleRegistrationTests_TestClassB
+        {
+
+        }
+
+        [Register()]
+        [Register(Constans.LiveTag)]
+        public class MultipleRegistrationTests_TestClassC
         {
 
         }

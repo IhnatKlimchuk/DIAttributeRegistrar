@@ -17,7 +17,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassA>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassA>();
             Assert.NotNull(testClass);
         }
 
@@ -28,7 +28,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.DevTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassA>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassA>();
             Assert.NotNull(testClass);
         }
 
@@ -39,7 +39,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.DevTag, Constans.TestTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassA>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassA>();
             Assert.NotNull(testClass);
         }
 
@@ -50,7 +50,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.DevTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassB>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassB>();
             Assert.NotNull(testClass);
         }
 
@@ -61,7 +61,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassB>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassB>();
             Assert.Null(testClass);
         }
 
@@ -72,7 +72,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.TestTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassB>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassB>();
             Assert.Null(testClass);
         }
 
@@ -83,7 +83,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.DevTag, Constans.TestTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassB>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassB>();
             Assert.Null(testClass);
         }
 
@@ -94,7 +94,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassC>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassC>();
             Assert.Null(testClass);
         }
 
@@ -105,7 +105,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.DevTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassC>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassC>();
             Assert.NotNull(testClass);
         }
 
@@ -116,7 +116,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.DevTag, Constans.TestTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassC>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassC>();
             Assert.NotNull(testClass);
         }
 
@@ -127,7 +127,7 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.LiveTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassC>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassC>();
             Assert.Null(testClass);
         }
 
@@ -138,30 +138,30 @@ namespace DIAttributeRegistrar.Test
                 .AddAttributeRegistration(CurrentAssemblies, Constans.LiveTag, Constans.TestTag)
                 .BuildServiceProvider();
 
-            var testClass = serviceProvider.GetService<TestClassC>();
+            var testClass = serviceProvider.GetService<SimpleRegistrationTests_TestClassC>();
             Assert.Null(testClass);
         }
 
         [Register]
-        public class TestClassA
+        public class SimpleRegistrationTests_TestClassA
         {
 
         }
 
         [Register(Constans.DevTag)]
-        public class TestClassB
+        public class SimpleRegistrationTests_TestClassB
         {
 
         }
 
         [Register(Constans.DevTag, Constans.TestTag)]
-        public class TestClassC
+        public class SimpleRegistrationTests_TestClassC
         {
 
         }
 
         [Register(Constans.DevTag, Constans.TestTag, Constans.LiveTag)]
-        public class TestClassD
+        public class SimpleRegistrationTests_TestClassD
         {
 
         }
