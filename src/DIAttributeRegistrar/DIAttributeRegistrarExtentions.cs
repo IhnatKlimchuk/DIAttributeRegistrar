@@ -36,7 +36,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
         private static Assembly[] GetAllAssemblies()
         {
-            return DependencyContext.Default.RuntimeLibraries.SelectMany(l => l.GetDefaultAssemblyNames(DependencyContext.Default)).Select(Assembly.Load).ToArray();
+            return DependencyContext
+                .Default
+                .RuntimeLibraries
+                .SelectMany(l => l.GetDefaultAssemblyNames(DependencyContext.Default))
+                .Select(Assembly.Load)
+                .ToArray();
         }
 
         private static void Register(IServiceCollection services, ServiceLifetime serviceLifetime, Type toRegister, Type asType = null)
@@ -68,21 +73,21 @@ namespace Microsoft.Extensions.DependencyInjection
                     new
                     {
                         Type = type,
-                        AttributeValues = type.GetTypeInfo().GetCustomAttributes<RegisterAttribute>(false).Where(ra => FilterRegisterAttribute(ra.Tags, requiredTags))
+                        AttributeValues = type.GetTypeInfo().GetCustomAttributes<RegisterAttribute>(false).Where(ra => IsRegisterAttributeTagValid(ra.Tags, requiredTags))
                     })
                 .Where(t => t.AttributeValues != null);
 
             foreach (var typeToRegister in typesToRegister)
             {
-                foreach (var asType in typeToRegister.AttributeValues.GroupBy(t => t.AsType))
+                foreach (var asTypeGroup in typeToRegister.AttributeValues.GroupBy(t => t.AsType))
                 {
-                    var selectedAttribute = asType.OrderByDescending(t => t.ServiceLifetime).FirstOrDefault();
+                    var selectedAttribute = asTypeGroup.OrderByDescending(t => t.ServiceLifetime).FirstOrDefault();
                     Register(services, selectedAttribute.ServiceLifetime, typeToRegister.Type, selectedAttribute.AsType);
                 }
             }
         }
 
-        private static bool FilterRegisterAttribute(string[] attributeTags, string[] requiredTags)
+        private static bool IsRegisterAttributeTagValid(string[] attributeTags, string[] requiredTags)
         {            
             if (requiredTags.Length == 0)
             {
