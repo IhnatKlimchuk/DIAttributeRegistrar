@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         /// <summary>
         ///     <para>
-        ///         Provides ability initialize all attribute marked dependencies.
+        ///         Provides ability to initialize all attribute marked dependencies.
         ///     </para>
         /// </summary>
         /// <param name="serviceCollection">Service collection to add dependencies.</param>
@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         /// <summary>
         ///     <para>
-        ///         Provides ability initialize all attribute marked dependencies.
+        ///         Provides ability to initialize all attribute marked dependencies.
         ///     </para>
         /// </summary>
         /// <param name="serviceCollection">Service collection to add dependencies.</param>
