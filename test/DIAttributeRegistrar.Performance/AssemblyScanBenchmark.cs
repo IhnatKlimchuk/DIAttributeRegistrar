@@ -11,9 +11,8 @@ namespace DIAttributeRegistrar.Performance
     [Config(typeof(BaseBenchmarkConfig))]
     public class AssemblyScanBenchmark
     {
-        private const int OperationsPerInvoke = 50000;
+        private const int OperationsPerInvoke = 100;
         
-        [GlobalSetup]
         public void GlobalSetup()
         {
         }
@@ -21,25 +20,23 @@ namespace DIAttributeRegistrar.Performance
         [Benchmark(Baseline = true, OperationsPerInvoke = OperationsPerInvoke)]
         public void WithSpecifiedAssemblies()
         {
-            IServiceCollection serviceCollection = new ServiceCollection();
             Func<IEnumerable<Assembly>> getSpecifiedAssemblies = () =>
             {
                 return Enumerable.Repeat(this.GetType().GetTypeInfo().Assembly, 1);
             };
-            AttributeRegistrar attributeRegistrar = new AttributeRegistrar(getSpecifiedAssemblies);
-
+            
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
+                IServiceCollection serviceCollection = new ServiceCollection();
+                AttributeRegistrar attributeRegistrar = new AttributeRegistrar(getSpecifiedAssemblies);
                 attributeRegistrar.RegisterTypes(serviceCollection, null);
                 serviceCollection.BuildServiceProvider();
             }
-            
         }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
         public void GoingThroughAllAssemblies()
         {
-            IServiceCollection serviceCollection = new ServiceCollection();
             Func<IEnumerable<Assembly>> getAllAssemblies = () =>
             {
                 return DependencyContext
@@ -48,10 +45,11 @@ namespace DIAttributeRegistrar.Performance
                     .SelectMany(l => l.GetDefaultAssemblyNames(DependencyContext.Default))
                     .Select(Assembly.Load);
             };
-            AttributeRegistrar attributeRegistrar = new AttributeRegistrar(getAllAssemblies);
 
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
+                IServiceCollection serviceCollection = new ServiceCollection();
+                AttributeRegistrar attributeRegistrar = new AttributeRegistrar(getAllAssemblies);
                 attributeRegistrar.RegisterTypes(serviceCollection, null);
                 serviceCollection.BuildServiceProvider();
             }
@@ -59,26 +57,25 @@ namespace DIAttributeRegistrar.Performance
         }
 
         [Benchmark(OperationsPerInvoke = OperationsPerInvoke)]
-        public void GoingThroughAssembliesWithReference()
+        public void GoingThroughAssembliesWithReferenceCheck()
         {
-            IServiceCollection serviceCollection = new ServiceCollection();
             Func<IEnumerable<Assembly>> getAssembliesWithReference = () =>
             {
-                var currentAssemblyFullName = this.GetType().GetTypeInfo().Assembly.FullName;
+                var currentAssemblyFullName = this.GetType().GetTypeInfo().Assembly.GetName().FullName;
                 return DependencyContext
                     .Default
                     .RuntimeLibraries
                     .SelectMany(l => l.GetDefaultAssemblyNames(DependencyContext.Default))
                     .Select(Assembly.Load)
-                    .Where(t => 
+                    .Where(t =>
                         t.GetReferencedAssemblies()
-                            .Select(Assembly.Load)
                             .Any(ra => 0 == String.Compare(ra.FullName, currentAssemblyFullName, StringComparison.OrdinalIgnoreCase)));
             };
-            AttributeRegistrar attributeRegistrar = new AttributeRegistrar(getAssembliesWithReference);
 
             for (int i = 0; i < OperationsPerInvoke; i++)
             {
+                IServiceCollection serviceCollection = new ServiceCollection();
+                AttributeRegistrar attributeRegistrar = new AttributeRegistrar(getAssembliesWithReference);
                 attributeRegistrar.RegisterTypes(serviceCollection, null);
                 serviceCollection.BuildServiceProvider();
             }

@@ -71,7 +71,7 @@ namespace DIAttributeRegistrar
 
         internal void RegisterTypes(IServiceCollection services, string[] requiredTags)
         {
-            IEnumerable<Assembly> assemblies = GetAllAssemblies();
+            IEnumerable<Assembly> assemblies = assemblySearchMethod();
             if (assemblies != null)
             {
                 this.RegisterTypes(services, assemblies, requiredTags);
@@ -92,11 +92,15 @@ namespace DIAttributeRegistrar
 
         private IEnumerable<Assembly> GetAllAssemblies()
         {
+            var currentAssemblyFullName = this.GetType().GetTypeInfo().Assembly.GetName().FullName;
             return DependencyContext
                 .Default
                 .RuntimeLibraries
                 .SelectMany(l => l.GetDefaultAssemblyNames(DependencyContext.Default))
-                .Select(Assembly.Load);
+                .Select(Assembly.Load)
+                .Where(t =>
+                    t.GetReferencedAssemblies()
+                        .Any(ra => 0 == String.Compare(ra.FullName, currentAssemblyFullName, StringComparison.OrdinalIgnoreCase)));
         }
     }
 }
