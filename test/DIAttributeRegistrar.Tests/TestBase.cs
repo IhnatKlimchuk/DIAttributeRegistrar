@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace DIAttributeRegistrar.Test
@@ -9,7 +10,7 @@ namespace DIAttributeRegistrar.Test
 
         protected Assembly CurrentAssembly { get; set; }
 
-        protected Assembly[] CurrentAssemblies { get; set; }
+        protected IEnumerable<Assembly> CurrentAssemblies { get; set; }
 
         public TestBase()
         {
