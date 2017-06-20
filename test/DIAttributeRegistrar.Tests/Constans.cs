@@ -1,4 +1,4 @@
-﻿namespace DIAttributeRegistrar.Test
+﻿namespace DIAttributeRegistrar.Tests
 {
     public static class Constans
     {

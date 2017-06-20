@@ -7,9 +7,11 @@
     <Authors>Ihnat Klimchuk</Authors>
     <Description>Easy and simple attribute based dependency injection registration.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <Copyright></Copyright>
     <PackageTags>aspnet aspnetcore dependency-injection dependency injection attribute registration</PackageTags>
+    <PackageProjectUrl>https://github.com/IhnatKlimchuk/DIAttributeRegistrar</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/IhnatKlimchuk/DIAttributeRegistrar</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

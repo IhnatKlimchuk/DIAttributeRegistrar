@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DIAttributeRegistrar.Test
+namespace DIAttributeRegistrar.Tests
 {
     public abstract class TestBase
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-namespace DIAttributeRegistrar.Test
+namespace DIAttributeRegistrar.Tests
 {
     public class AsTypeRegistrationTests : TestBase
     {
