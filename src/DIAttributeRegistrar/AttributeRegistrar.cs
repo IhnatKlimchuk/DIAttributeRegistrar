@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DIAttributeRegistrar.AssemblyDiscovery;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ namespace DIAttributeRegistrar
 {
     internal class AttributeRegistrar
     {
-        internal AttributeRegistrar(Func<IEnumerable<Assembly>> assemblySearchMethod = null)
+        internal AttributeRegistrar(IAssemblyDiscoveryProvider assemblyDiscoveryProvider = null)
         {
-            this.assemblySearchMethod = assemblySearchMethod ?? GetAllAssemblies;
+            this.assemblyDiscoveryProvider = assemblyDiscoveryProvider ?? new DefaultAssemblyDiscoveryProvider();
         }
 
-        private Func<IEnumerable<Assembly>> assemblySearchMethod;
+        private IAssemblyDiscoveryProvider assemblyDiscoveryProvider;
 
         internal void RegisterType(IServiceCollection services, ServiceLifetime serviceLifetime, Type toRegister, Type asType = null)
         {
@@ -71,7 +72,7 @@ namespace DIAttributeRegistrar
 
         internal void RegisterTypes(IServiceCollection services, string[] requiredTags)
         {
-            IEnumerable<Assembly> assemblies = assemblySearchMethod();
+            IEnumerable<Assembly> assemblies = assemblyDiscoveryProvider.GetCandidateAssemblies();
             if (assemblies != null)
             {
                 this.RegisterTypes(services, assemblies, requiredTags);
@@ -88,19 +89,6 @@ namespace DIAttributeRegistrar
             {
                 return attributeTags.Length == 0 || requiredTags.All(rt => attributeTags.Any(at => at.Equals(rt, StringComparison.OrdinalIgnoreCase)));
             }
-        }
-
-        private IEnumerable<Assembly> GetAllAssemblies()
-        {
-            var currentAssemblyFullName = this.GetType().GetTypeInfo().Assembly.GetName().FullName;
-            return DependencyContext
-                .Default
-                .RuntimeLibraries
-                .SelectMany(l => l.GetDefaultAssemblyNames(DependencyContext.Default))
-                .Select(Assembly.Load)
-                .Where(t =>
-                    t.GetReferencedAssemblies()
-                        .Any(ra => 0 == String.Compare(ra.FullName, currentAssemblyFullName, StringComparison.OrdinalIgnoreCase)));
         }
     }
 }
