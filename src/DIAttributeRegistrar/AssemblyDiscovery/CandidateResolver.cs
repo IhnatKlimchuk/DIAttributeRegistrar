@@ -28,7 +28,7 @@ namespace DIAttributeRegistrar.AssemblyDiscovery
         {
             foreach (var dependency in runtimeDependencies)
             {
-                if (ComputeClassification(dependency.Key) == DependencyClassification.ReferencesAttributeRegistar)
+                if (ComputeClassification(dependency.Key) == DependencyClassification.ReferencesAttributeRegistrar)
                 {
                     yield return dependency.Value.Library;
                 }
@@ -40,7 +40,7 @@ namespace DIAttributeRegistrar.AssemblyDiscovery
             var classification = DependencyClassification.Unknown;
             if (referenceAssemblies.Contains(library.Name))
             {
-                classification = DependencyClassification.AttributeRegistarReference;
+                classification = DependencyClassification.AttributeRegistrarReference;
             }
 
             return new Dependency(library, classification);
@@ -50,7 +50,7 @@ namespace DIAttributeRegistrar.AssemblyDiscovery
         {
             if (!runtimeDependencies.ContainsKey(dependency))
             {
-                return DependencyClassification.DoesNotReferenceAttributeRegistar;
+                return DependencyClassification.DoesNotReferenceAttributeRegistrar;
             }
 
             var candidateEntry = runtimeDependencies[dependency];
@@ -60,14 +60,14 @@ namespace DIAttributeRegistrar.AssemblyDiscovery
             }
             else
             {
-                var classification = DependencyClassification.DoesNotReferenceAttributeRegistar;
+                var classification = DependencyClassification.DoesNotReferenceAttributeRegistrar;
                 foreach (var candidateDependency in candidateEntry.Library.Dependencies)
                 {
                     var dependencyClassification = ComputeClassification(candidateDependency.Name);
-                    if (dependencyClassification == DependencyClassification.ReferencesAttributeRegistar ||
-                        dependencyClassification == DependencyClassification.AttributeRegistarReference)
+                    if (dependencyClassification == DependencyClassification.ReferencesAttributeRegistrar ||
+                        dependencyClassification == DependencyClassification.AttributeRegistrarReference)
                     {
-                        classification = DependencyClassification.ReferencesAttributeRegistar;
+                        classification = DependencyClassification.ReferencesAttributeRegistrar;
                         break;
                     }
                 }

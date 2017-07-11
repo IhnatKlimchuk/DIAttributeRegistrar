@@ -3,8 +3,8 @@
     internal enum DependencyClassification
     {
         Unknown = 0,
-        ReferencesAttributeRegistar = 1,
-        DoesNotReferenceAttributeRegistar = 2,
-        AttributeRegistarReference = 3,
+        ReferencesAttributeRegistrar = 1,
+        DoesNotReferenceAttributeRegistrar = 2,
+        AttributeRegistrarReference = 3,
     }
 }
